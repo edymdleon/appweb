@@ -1,0 +1,224 @@
+﻿@model VWorkS.Data.EmpleadoManto
+
+
+@Html.HiddenFor(model => model.Empleado.EstadoRegistro)
+@Html.Hidden("TipoManto", (object)@ViewBag.TipoManto)
+<input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+<div class="form-group row">
+    <label class="col-md-4 control-label">Id</label>
+    <div class="col-md-12">
+        @Html.EditorFor(model => model.Empleado.IdEmpleado, new { htmlAttributes = new { @class = "form-control", @readonly = "true", @type="" } })
+        @Html.ValidationMessageFor(model => model.Empleado.IdEmpleado, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-4 control-label">Nombre Completo</label>
+    <div class="col-md-12">
+        @{
+            string valido = "";
+            if (!ViewData.ModelState.IsValid)
+            {
+
+                if (ViewData.ModelState["Empleado.NombreComleto"].ValidationState.ToString() == "Invalid")
+                    valido = "is-invalid";
+                else
+                    valido = "is-valid";
+
+            }
+            <input asp-for="Empleado.NombreCompleto" class="form-control @valido" />
+            <span asp-validation-for="Empleado.NombreCompleto" class="invalid-feedback"></span>
+        }
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-4 control-label">DPI</label>
+    <div class="col-md-12">
+        @{
+            if (!ViewData.ModelState.IsValid)
+            {
+
+                if (ViewData.ModelState["Empleado.DPI"].ValidationState.ToString() == "Invalid")
+                    valido = "is-invalid";
+                else
+                    valido = "is-valid";
+
+            }
+            <input asp-for="Empleado.DPI" class="form-control @valido" />
+            <span asp-validation-for="Empleado.DPI" class="invalid-feedback"></span>
+        }
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-4 control-label">Cantidad De Hijos</label>
+    <div class="col-md-12">
+        @{
+            if (!ViewData.ModelState.IsValid)
+            {
+
+                if (ViewData.ModelState["Empleado.CantidadHijos"].ValidationState.ToString() == "Invalid")
+                    valido = "is-invalid";
+                else
+                    valido = "is-valid";
+
+            }
+            <input asp-for="Empleado.CantidadHijos" class="form-control @valido" />
+            <span asp-validation-for="Empleado.CantidadHijos" class="invalid-feedback"></span>
+        }
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-4 control-label">Salario Base</label>
+    <div class="col-md-12">
+        @{
+            if (!ViewData.ModelState.IsValid)
+            {
+
+                if (ViewData.ModelState["Empleado.SalarioBase"].ValidationState.ToString() == "Invalid")
+                    valido = "is-invalid";
+                else
+                    valido = "is-valid";
+
+            }
+            <input asp-for="Empleado.SalarioBase" class="form-control @valido" />
+            <span asp-validation-for="Empleado.SalarioBase" class="invalid-feedback"></span>
+        }
+    </div>
+</div>
+
+<div class="form-group">
+    @if (Model.Empleado.EstadoRegistro == "A")
+    {
+        <div class="input-group">
+            <label class="control-label" id="switch01" name="switch01">Activo</label>
+            <div class="input-group-append">
+                <div class="switch">
+                    <label>
+                        <input type="checkbox" checked id="radio_01" name="radio_01" onclick="CambiarEstado();"><span class="lever switch-col-light-green"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="input-group">
+            <label class="control-label" id="switch01" name="switch01">Inactivo</label>
+            <div class="input-group-append">
+                <div class="switch">
+                    <label>
+                        <input type="checkbox" id="radio_01" name="radio_01" onclick="CambiarEstado();"><span class="lever switch-col-light-green"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="form-group row">
+    <label class="col-md-4 control-label">Bono Decreto</label>
+    <div class="col-md-12">
+        <span>250.00</span>
+    </div>
+    </div>
+<div class="form-group row">
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <label class="col-md-4 control-label">IGSS</label>
+            @{
+                double igss = 0;
+                if (Model.Empleado.SalarioBase > 0)
+                {
+                    igss = Model.Empleado.SalarioBase * 4.83 / 100;
+                }
+                <span>@igss</span>
+            }
+        </div>
+        <div class="col-md-6">
+            <label class="col-md-4 control-label">IRTRA</label>
+            @{
+                double irtra = 0;
+                if (Model.Empleado.SalarioBase > 0)
+                {
+                    irtra = Model.Empleado.SalarioBase * 1 / 100;
+                }
+                <span>@irtra</span>
+            }
+        </div>
+        <label class="col-md-12 control-label">Bono de paternidad</label>
+        <div class="col-md-6">
+
+            @{
+                double pater = 0;
+                if (Model.Empleado.CantidadHijos > 0)
+                {
+                    pater = Model.Empleado.CantidadHijos * 133;
+                }
+                <span>@pater</span>
+            }
+        </div>
+        <label class="col-md-12 control-label">Salario total</label>
+        <div class="col-md-6">
+
+            @{
+                double stotal = 0;
+                if (Model.Empleado.SalarioBase > 0)
+                {
+                    stotal = Model.Empleado.SalarioBase + pater + 250;
+                }
+                <span>@stotal</span>
+            }
+        </div>
+        <label class="col-md-12 control-label">Salario liquido</label>
+        <div class="col-md-6">
+
+            @{
+                double sliquido = 0;
+                if (Model.Empleado.SalarioBase > 0)
+                {
+                    sliquido = stotal - igss - irtra;
+                }
+                <span>@sliquido</span>
+            }
+        </div>
+    </div>
+</div>
+        <hr />
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a href="#ultimamodificacion" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                    <span class="">Modificación</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#otrasmodificaciones" data-toggle="tab" aria-expanded="true"
+                   class="nav-link">
+                    <span class="">Otras Modificaciones</span>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content border">
+            <div class="tab-pane show active" id="ultimamodificacion">
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Fecha y Hora</label>
+                    <div class="col-md-12">
+                        <input value="@Model.Empleado.FechaHoraModifica" name="Empleado.FechaHoraModifica" id="Empleado.FechaHoraModifica" readonly class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Usuario</label>
+                    <div class="col-md-12">
+                        <input value="@Model.Empleado.Usuario" name="Empleado.Usuario" id="Empleado.Usuario" readonly class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+

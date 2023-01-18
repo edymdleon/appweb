@@ -1,0 +1,13 @@
+{
+  "ConnectionStrings": {
+    "ConnectConnection": "Data Source=localhost;Initial Catalog=VWorkS;Persist Security Info=True;User ID=test;Password=dbtest;MultipleActiveResultSets=true"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*"
+}

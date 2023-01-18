@@ -1,0 +1,33 @@
+﻿@page
+@model VWorkS.Views.Palindromo.IndexModel
+@{
+}
+ 
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">Palindromos</h1>
+                <div class="col-6">
+                    <div class="input-group">
+                        <input type="text" id="search" name="search" class="form-control search-query pull-right" placeholder="Buscar..." onkeypress="Mensaje(event)" value="@ViewBag.Filtro">
+                        <button class="btn btn-primary" style="margin-right:1px;" type="button" onclick="Buscar()"><span class="">BUSCAR</span></button>
+                    </div>
+                    </div>
+                <p>Palindromos: <span>@ViewBag.Cantidad</span></p>
+      
+                @foreach(var item in ViewBag.Lista)
+            {
+                <p>@item</p>
+            }
+                </div>
+            </div>
+</div>
+</div>
+
+<script type="text/javascript">
+    function Buscar() {
+        var busqueda = $('#search').val();
+        location.href = 'Palindromo?Busqueda=' + busqueda;
+    }
+</script>

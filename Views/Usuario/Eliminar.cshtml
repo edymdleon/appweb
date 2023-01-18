@@ -1,0 +1,100 @@
+﻿
+@model VWorkS.Data.UsuarioManto
+
+
+@Html.HiddenFor(model => model.Usuario.EstadoRegistro)
+@Html.Hidden("TipoManto", (object)@ViewBag.TipoManto)
+<input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+
+<div class="form-group row">
+    <label class="col-md-4 control-label">Id</label>
+    <div class="col-md-12">
+        @Html.EditorFor(model => model.Usuario.IdUsuario, new { htmlAttributes = new { @class = "form-control", @readonly = "true", @type = "" } })
+        @Html.ValidationMessageFor(model => model.Usuario.IdUsuario, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group row">
+    <label class="col-md-4 control-label">Nombre De Usuario</label>
+    <div class="col-md-12">
+        @Html.EditorFor(model => model.Usuario.NombreUsuario, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+        @Html.ValidationMessageFor(model => model.Usuario.NombreUsuario, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @if (Model.Usuario.EstadoRegistro == "A")
+    {
+        <div class="input-group">
+            <label class="control-label" id="switch01" name="switch01">Activo</label>
+            <div class="input-group-append">
+                <div class="switch">
+                    <label>
+                        <input type="checkbox" disabled checked id="radio_01" name="radio_01"><span class="lever switch-col-light-green"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="input-group">
+            <label class="control-label" id="switch01" name="switch01">Inactivo</label>
+            <div class="input-group-append">
+                <div class="switch">
+                    <label>
+                        <input type="checkbox" disabled id="radio_01" name="radio_01"><span class="lever switch-col-light-green"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<hr />
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a href="#ultimamodificacion" data-toggle="tab" aria-expanded="false" class="nav-link active">
+            <span class="">Modificación</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="#otrasmodificaciones" data-toggle="tab" aria-expanded="true"
+           class="nav-link">
+            <span class="">Otras Modificaciones</span>
+        </a>
+    </li>
+</ul>
+<div class="tab-content border">
+    <div class="tab-pane show active" id="ultimamodificacion">
+        <div class="form-group">
+            <label class="col-md-4 control-label">Fecha y Hora</label>
+            <div class="col-md-12">
+                <input value="@Model.Usuario.FechaHoraModifica" name="Usuario.FechaHoraModifica" readonly class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">Usuario</label>
+            <div class="col-md-12">
+                <input value="@Model.Usuario.NombreUsuario" name="Usuario.Usuario" readonly class="form-control" />
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    if (!ViewData.ModelState.IsValid)
+    {
+        <br />
+        var error = ViewData.ModelState["EliminarError"].Errors;
+<div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-bottom:-6px;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>Error - </strong>No es posible eliminar el Usuario, para dejar de utilizarlo cambie el estado a INACTIVO.
+</div>
+    }
+}
+
+
+
+
+
+
+

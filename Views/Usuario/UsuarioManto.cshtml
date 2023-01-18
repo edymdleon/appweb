@@ -1,0 +1,66 @@
+﻿@model VWorkS.Data.UsuarioManto
+
+<div class="modal-header">
+    @if (ViewBag.TipoManto == "1")
+    {
+        <h5 class="modal-title" id="Titulo">Agregando Usuario  </h5>
+    }
+    else
+    {
+        <h5 class="modal-title" id="Titulo">Editando Usuario  </h5>
+    }
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    
+    <form asp-action="UsuarioManto"> @*class="needs-validation" novalidate>*@
+        @{
+            if ((ViewBag.TipoManto == "1"))
+            {
+                <partial name="Crear" />
+            }
+            if ((ViewBag.TipoManto == "2"))
+            {
+                <partial name="Editar" />
+            }
+            if ((ViewBag.TipoManto == "3"))
+            {
+                <partial name="Eliminar" />
+            }
+        }
+        <br />
+        <div class="form-group text-right">
+            @if (ViewBag.TipoManto == "1")
+            {
+                <button type="submit" class="btn btn-primary pull-right" id="BotonOp" name="BotonOp">Agregar</button>
+            }
+            @if (ViewBag.TipoManto == "2")
+            {
+                <button type="submit" class="btn btn-primary pull-right" id="BotonOp" name="BotonOp">Modificar</button>
+            }
+            @if (ViewBag.TipoManto == "3")
+            {
+                <button type="submit" class="btn btn-primary pull-right" id="BotonOp" name="BotonOp">Eliminar</button>
+            }
+        </div>
+    </form>
+        
+</div>
+
+<script type="text/javascript">
+    function CambiarEstado() {
+        var valor = $("#radio_01").prop('checked');
+        if (valor == true) {
+            $("#Usuario_EstadoRegistro").val("A");
+            $('#switch01').text("Activo");
+        } else {
+            $("#Usuario_EstadoRegistro").val("I");
+            $('#switch01').text("Inactivo");
+        }
+    }
+</script>
+
+
+

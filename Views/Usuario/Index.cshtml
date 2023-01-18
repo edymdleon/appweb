@@ -1,0 +1,132 @@
+﻿@model IPagedList<VWorkS.Data.Usuario>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common
+
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<div id='myModal' class='modal fade' tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">Usuarios</h1>
+                <div class="input-group">
+                    <input type="text" id="search" name="search" class="form-control search-query pull-right" placeholder="Buscar..." onkeypress="Mensaje(event)" value="@ViewBag.Filtro">
+                    <button class="btn btn-primary" style="margin-right:1px;" type="button" onclick="Buscar()"><span class=""><i class="ti-search"></i></span></button>
+                    @Html.ActionLink("Agregar Usuario", "UsuarioAgregar", "Usuario", null, new { data_modal = "modal", id = "btnCreate", @class = "btn btn-default btn-primary", @style = "margin-left:1px;" })
+                </div>
+
+
+
+                <br />
+                <div class="table-responsive">
+                    <table id="demo-foo-addrow" class="table table-bordered m-t-30 table-hover" data-paging="true" data-paging-size="7">
+                        <thead class="bg-info text-white">
+                            <tr>
+                                <th width="65%">Nombre De Usuario</th>
+                                <th width="15%">Estado</th>
+                                <th width="20%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.NombreUsuario)
+                                        </td>
+
+                                        @if (item.EstadoRegistro == "A")
+                                        {
+                                            <td>Activo</td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <span class="badge badge-pill badge-danger">Inactivo</span>
+                                            </td>
+                                        }
+                                        <td>
+                                            <a href="~/Usuario/UsuarioEditar/@item.IdUsuario" class="text-inverse pr-2" data-toggle="tooltip" title="" data-original-title="Modificar" data-modal="modal"><i class="ti-marker-alt"></i></a>
+                                            <a href="~/Usuario/UsuarioEliminar/@item.IdUsuario" class="text-inverse" title="" data-toggle="tooltip" data-original-title="Eliminar" data-modal="modal"> <i class="ti-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-lg-10">
+                        <div class="grid-container text-truncate">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="grid-container text-truncate">
+                            <select class="btn-info form-control text-white" style="font-size:inherit; align-content:center;" id="paginas" name="paginas" onchange="Paginador();">
+                                @for (int k = 5; k <= 30; k++)
+                                {
+                                    string k1 = k + "";
+                                    @if (ViewBag.Paginador == k)
+                                    {
+                                        <option value="@k1" selected>@k1</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@k1">@k1</option>
+                                    }
+                                    k = k + 4;
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        @Html.PagedListPager(Model, page => Url.Action("index", new { page, search = ViewBag.Filtro, Paginador = ViewBag.Paginador }), new PagedListRenderOptions { LinkToFirstPageFormat = "<< Primera", LinkToPreviousPageFormat = "< Anterior", LinkToNextPageFormat = "Siguiente >", LinkToLastPageFormat = "Ultima>>" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    function Paginador() {
+        var busqueda = $('#search').val();
+        var paginado = $('#paginas').val();
+        location.href = 'Usuario?Busqueda=' + busqueda + '&paginador=' + paginado;
+    }
+
+    function Buscar() {
+        var busqueda = $('#search').val();
+        var paginado = $('#paginas').val();
+        location.href = 'Usuario?Busqueda=' + busqueda + '&paginador=' + paginado;;
+    }
+
+    function Mensaje(e) {
+        if (e.keyCode == 13) {
+            Buscar();
+        }
+    }
+</script>
+
